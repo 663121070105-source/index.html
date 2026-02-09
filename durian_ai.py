@@ -40,42 +40,39 @@ else:
     img_file = st.file_uploader("เลือกไฟล์รูปภาพทุเรียน...", type=["jpg", "jpeg", "png"])
 
 
+# --- แก้ไขส่วนการประมวลผล (แทนที่ส่วนเดิม) ---
 if img_file:
-    with st.spinner('AI กำลังวิเคราะห์เนื้อทุเรียน...'):
+    with st.spinner('AI กำลังวาดกรอบวิเคราะห์ทุเรียน...'):
         image = Image.open(img_file)
-        
-        # แก้ปัญหา path ด้วยการบันทึกไฟล์ชั่วคราว
         temp_path = "temp_scan.jpg"
         image.save(temp_path)
         
         try:
+           
             rf = Roboflow(api_key=ROBOFLOW_API_KEY)
             project = rf.workspace().project(PROJECT_NAME)
             model = project.version(VERSION_NUMBER).model
             
-            # ส่งไป Scan
+            
+            model.predict(temp_path).save("result.jpg")
+            
+           
+            st.image("result.jpg", caption="AI ตรวจพบและแบ่งลูกทุเรียนแล้ว", use_container_width=True)
+            
+            
             prediction = model.predict(temp_path).json()
-            
-            st.image(image, caption="รูปภาพที่ส่งตรวจ", use_container_width=True)
-            
-            st.subheader("🔍 ผลการวิเคราะห์")
             if prediction['predictions']:
                 for pred in prediction['predictions']:
-                    confidence = pred['confidence'] * 100
-                    st.success(f"✅ ตรวจพบ: **{pred['class']}**")
-                    st.progress(pred['confidence']) # เพิ่มแถบแสดงความมั่นใจ
-                    st.write(f"ระดับความมั่นใจ: {confidence:.2f}%")
-            else:
-                st.warning("⚠️ ไม่พบข้อมูลทุเรียนในภาพนี้ กรุณาลองใหม่อีกครั้ง")
-                
+                    st.success(f"🎯 ลูกที่พบ: {pred['class']} (มั่นใจ {pred['confidence']:.2%})")
+            
         except Exception as e:
-            st.error(f"เกิดข้อผิดพลาด: {e}")
-        
+            st.error(f"Error: {e}")
    
         if os.path.exists(temp_path):
             os.remove(temp_path)
 
 st.divider()
 st.info("💡 คำแนะนำ: ควรตรวจสอบทุเรียนในที่ที่มีแสงสว่างเพียงพอเพื่อให้ AI ทำงานได้แม่นยำที่สุด")
+
 
 
