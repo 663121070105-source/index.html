@@ -2,7 +2,7 @@ import streamlit as st
 from roboflow import Roboflow
 from PIL import Image
 
-ROBOFLOW_API_KEY = "rf_qx1IlPFbPmRVtwQr57gkMhb25zs1" 
+ROBOFLOW_API_KEY = "aUQh6GrqTow8tSgITsZK" 
 PROJECT_NAME = "durian-detection-zb1dk"
 VERSION_NUMBER = 3
 
@@ -32,3 +32,4 @@ try:
             st.warning("ไม่พบข้อมูลทุเรียนในภาพ")
 except Exception as e:
     st.error(f"เกิดข้อผิดพลาดในการเชื่อมต่อ: {e}")
+
