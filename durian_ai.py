@@ -21,7 +21,9 @@ try:
 
     if img_file:
         image = Image.open(img_file)
-        prediction = model.predict(image).json()
+       # บันทึกรูปชั่วคราวเพื่อให้ AI อ่านค่าได้ถูกต้อง
+        image.save("temp_durian.jpg")
+        prediction = model.predict("temp_durian.jpg").json()
         st.image(image, caption="รูปของคุณ", use_container_width=True)
         
         st.write("### ผลการตรวจสอบ:")
@@ -32,4 +34,5 @@ try:
             st.warning("ไม่พบข้อมูลทุเรียนในภาพ")
 except Exception as e:
     st.error(f"เกิดข้อผิดพลาดในการเชื่อมต่อ: {e}")
+
 
