@@ -3,7 +3,7 @@ from roboflow import Roboflow
 from PIL import Image
 import os
 
-ROBOFLOW_API_KEY = "aUQh...................." # ใช้รหัส Private Key ของคุณ
+ROBOFLOW_API_KEY = "aUQh6GrqTow8tSgITsZK" # ใช้รหัส Private Key ของคุณ
 PROJECT_NAME = "durian-detection-zb1dk"
 VERSION_NUMBER = 3
 
@@ -78,3 +78,4 @@ if img_file:
 
 st.divider()
 st.info("💡 คำแนะนำ: ควรตรวจสอบทุเรียนในที่ที่มีแสงสว่างเพียงพอเพื่อให้ AI ทำงานได้แม่นยำที่สุด")
+
